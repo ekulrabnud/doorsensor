@@ -1,0 +1,37 @@
+import time
+import RPi.GPIO as io
+import paho.mqtt.client as mqtt
+io.setmode(io.BCM)
+
+door_pin = 15
+io.setup(door_pin,io.)
+
+doorbell = 1
+
+def on_connect(client,data,flags,rc):
+	print "Connected"
+	client.subscribe('/master')
+
+
+
+client = mqtt.Client("Door")
+client.on_connect = on_connect
+client.connect('192.168.1.15',1883,10)
+client.loop_start()
+
+
+while True:
+#	name = "luke"
+#	print name
+#	time.sleep(1)
+#	client.publish('/door',name)
+	if io.input(door_pin)==False:
+		print("Door Bell")
+		doorbell = 1
+		client.publish('/door',"Door Bell" +":"+ time.ctime())
+#		time.sleep(1)
+#	if (io.input(door_pin) and doorbell == 1):
+#		client.publish("/door","No Door Bell")
+#		print("No Door Bell")
+#		doorbell = 0
+		

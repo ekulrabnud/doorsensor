@@ -1,0 +1,31 @@
+import time
+import RPi.GPIO as io
+import paho.mqtt.client as mqtt
+io.setmode(io.BCM)
+
+door_pin = 15
+io.setup(door_pin,io.IN,pull_up_down=io.PUD_UP)
+
+def on_connect(client,data,flags,rc):
+	print "Connected"
+
+client = mqtt.Client("Door")
+client.on_connect = on_connect
+client.connect('192.168.1.15',1883,10)
+client.loop_start()
+
+while True:
+#	name = "luke"
+#	print name
+#	time.sleep(1)
+#	client.publish('/door',name)
+	if io.input(door_pin):
+		print("Door Open")
+		door = 0
+		client.publish('/door',"Door Open")
+		time.sleep(1)
+	if:
+#		
+client.publish("/door","Door Closed")
+		print("Door Closed")
+	time.sleep(0.5)
